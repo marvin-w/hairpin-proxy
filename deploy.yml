@@ -23,8 +23,13 @@ spec:
         app: hairpin-proxy-haproxy
     spec:
       containers:
-        - image: compumike/hairpin-proxy-haproxy:0.2.1
+        - image: marvinw94/hairpin-proxy-haproxy:latest
           name: main
+          securityContext:
+            runAsUser: 0
+          env:
+            - name: TARGET_SERVER
+              value: ingress-nginx-controller.kube-system.svc.cluster.local
           resources:
             requests:
               memory: "100Mi"
@@ -105,7 +110,7 @@ rules:
     resources:
       - configmaps
     resourceNames:
-      - coredns
+      - coredns-base
     verbs:
       - get
       - watch
@@ -151,8 +156,11 @@ spec:
         runAsUser: 405
         runAsGroup: 65533
       containers:
-        - image: compumike/hairpin-proxy-controller:0.2.1
+        - image: marvinw94/hairpin-proxy-controller:latest
           name: main
+          env:
+            - name: COREDNS_CM_NAME
+              value: coredns-base
           resources:
             requests:
               memory: "50Mi"

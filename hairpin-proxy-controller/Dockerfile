@@ -1,7 +1,7 @@
-FROM ruby:2.7.2-alpine AS build
+FROM ruby:3.4-alpine AS build
 
 ENV GEM_HOME="/usr/local/bundle"
-ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
+ENV PATH=$GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
 RUN echo "gem: --no-document" > ~/.gemrc
 
 RUN apk add --no-cache \
@@ -14,7 +14,7 @@ RUN bundle install --jobs 16 --retry 5
 
 # Comment out these four lines for development convenience.
 # Uncomment for a smaller container image.
-FROM ruby:2.7.2-alpine AS run
+FROM ruby:3.4-alpine AS run
 COPY --from=build $GEM_HOME $GEM_HOME
 COPY Gemfile Gemfile.lock /app/
 WORKDIR /app/

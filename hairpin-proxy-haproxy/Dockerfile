@@ -1,4 +1,4 @@
-FROM haproxy:2.7-alpine
+FROM haproxy:3.2-alpine
 
 EXPOSE 80
 EXPOSE 443
